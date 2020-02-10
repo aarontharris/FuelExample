@@ -11,51 +11,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.ath.fuel.Lazy;
 import com.example.fuelexample.R;
-import com.example.fuelexample.app.AppSingleton;
+import com.example.fuelexample.app.AppScopedSingleton;
 import com.example.fuelexample.core.os.CoreFragment;
+import com.example.fuelexample.core.util.Log;
 import com.example.fuelexample.core.util.Pre;
 import com.example.fuelexample.ui.common.fragment.exampleshared.SharedFragment;
-import com.example.fuelexample.ui.common.fragment.exampleshared.SharedFragment.SharedFragmentModule;
 import com.example.fuelexample.ui.main.MainViewModel;
 import com.example.fuelexample.ui.play.PlayActivity;
-import com.example.fuelexample.ui.singleton.ActivitySingleton;
-
-import javax.inject.Inject;
-
-import dagger.Binds;
-import dagger.Module;
-import dagger.Subcomponent;
-import dagger.android.AndroidInjector;
-import dagger.multibindings.ClassKey;
-import dagger.multibindings.IntoMap;
+import com.example.fuelexample.ui.singleton.ActivityScopeSingleton;
 
 import static com.example.fuelexample.core.util.Views.findView;
 
 
 public class MainFragment extends CoreFragment {
 
-    @Module(subcomponents = MainFragmentComponent.class)
-    public abstract class MainFragmentModule {
+    private final @NonNull Lazy<AppScopedSingleton> lAppScopedSingleton = AppScopedSingleton.attain(this);
+    private final @NonNull Lazy<ActivityScopeSingleton> lActivityScopedSingleton = ActivityScopeSingleton.attain(this);
 
-        @Binds
-        @IntoMap
-        @ClassKey(MainFragment.class)
-        abstract AndroidInjector.Factory<?> bindMainFragmentInjectorFactory(MainFragmentComponent.Factory factory);
-
-    }
-
-    @Subcomponent(modules = SharedFragmentModule.class)
-    public interface MainFragmentComponent extends AndroidInjector<MainFragment> {
-
-        @Subcomponent.Factory
-        public interface Factory extends AndroidInjector.Factory<MainFragment> {
-        }
-
-    }
-
-    @Inject AppSingleton appSingleton;
-    @Inject ActivitySingleton activitySingleton;
 
     private MainViewModel mViewModel;
 
@@ -66,19 +40,18 @@ public class MainFragment extends CoreFragment {
     @Override public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
-        appSingleton.doSomething();
-        activitySingleton.doSomething();
+        Log.d("MainFragment...");
+        lAppScopedSingleton.get().doSomething();
+        lActivityScopedSingleton.get().doSomething();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         getChildFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_fragment_bottom_container, SharedFragment.newInstance())
                 .commitNow();
-
         return inflater.inflate(R.layout.main_fragment, container, false);
     }
 

@@ -10,28 +10,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.ath.fuel.Lazy;
 import com.example.fuelexample.R;
-import com.example.fuelexample.app.AppSingleton;
+import com.example.fuelexample.app.AppScopedSingleton;
 import com.example.fuelexample.core.os.CoreFragment;
+import com.example.fuelexample.core.util.Log;
 import com.example.fuelexample.ui.play.PlayViewModel;
-import com.example.fuelexample.ui.singleton.ActivitySingleton;
-
-import javax.inject.Inject;
-
-import dagger.Module;
-import dagger.android.ContributesAndroidInjector;
+import com.example.fuelexample.ui.singleton.ActivityScopeSingleton;
 
 
 public class PlayFragment extends CoreFragment {
 
-    @Module
-    public abstract class PlayFragmentModule {
-        @ContributesAndroidInjector
-        abstract PlayFragment injector();
-    }
+    private final @NonNull Lazy<AppScopedSingleton> lAppScopedSingleton = AppScopedSingleton.attain(this);
+    private final @NonNull Lazy<ActivityScopeSingleton> lActivityScopedSingleton = ActivityScopeSingleton.attain(this);
 
-    @Inject AppSingleton appSingleton;
-    @Inject ActivitySingleton activitySingleton;
 
     private PlayViewModel mViewModel;
 
@@ -42,8 +34,9 @@ public class PlayFragment extends CoreFragment {
     @Override public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
-        appSingleton.doSomething();
-        activitySingleton.doSomething();
+        Log.d("PlayFragment...");
+        lAppScopedSingleton.get().doSomething();
+        lActivityScopedSingleton.get().doSomething();
     }
 
     @Nullable

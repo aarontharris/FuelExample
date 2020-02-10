@@ -6,23 +6,12 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import javax.inject.Inject;
+import com.ath.fuel.FuelInjector;
 
-import dagger.android.AndroidInjection;
-import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasAndroidInjector;
-
-public class CoreActivity extends AppCompatActivity implements HasAndroidInjector {
-    @Inject DispatchingAndroidInjector<Object> injector;
-
-    @Override public AndroidInjector<Object> androidInjector() {
-        return injector;
-    }
-
+public class CoreActivity extends AppCompatActivity {
     @CallSuper
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
-        AndroidInjection.inject(this);
+        FuelInjector.ignite(this, this);
         super.onCreate(savedInstanceState);
     }
 }

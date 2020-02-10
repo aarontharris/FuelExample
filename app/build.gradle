@@ -24,11 +24,14 @@ android {
 }
 
 dependencies {
+    implementation project(path: ':Fuel')
     implementation 'com.google.code.gson:gson:2.8.6'
+
     implementation 'com.google.dagger:dagger:2.26'
     implementation 'com.google.dagger:dagger-android-support:2.26'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.26'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.26'
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

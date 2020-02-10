@@ -1,2 +1,3 @@
 include ':app'
+include ':Fuel'
 rootProject.name='FuelExample'

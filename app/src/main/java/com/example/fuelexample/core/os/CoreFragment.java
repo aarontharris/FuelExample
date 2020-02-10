@@ -6,25 +6,14 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.fuelexample.core.di.Di;
+import com.ath.fuel.FuelInjector;
 
-import javax.inject.Inject;
-
-import dagger.android.AndroidInjector;
-import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasAndroidInjector;
-
-public class CoreFragment extends Fragment implements HasAndroidInjector {
-    @Inject DispatchingAndroidInjector<Object> androidInjector;
+public class CoreFragment extends Fragment {
 
     @CallSuper
     @Override public void onAttach(@NonNull Context context) {
-        Di.inject(this);
+        FuelInjector.ignite(context, this);
         super.onAttach(context);
     }
 
-    @Override
-    public AndroidInjector<Object> androidInjector() {
-        return androidInjector;
-    }
 }
