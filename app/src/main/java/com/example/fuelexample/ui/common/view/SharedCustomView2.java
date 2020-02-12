@@ -15,20 +15,21 @@ import com.example.fuelexample.core.util.Views;
 import com.example.fuelexample.ui.singleton.ActivityScopeSingleton;
 import com.example.fuelexample.ui.singleton.MyViewRootSingleton;
 
-public class SharedCustomView extends LinearLayoutCompat {
+public class SharedCustomView2 extends LinearLayoutCompat {
     private final @NonNull Lazy<AppScopedSingleton> lAppScopedSingleton = AppScopedSingleton.attain(this);
     private final @NonNull Lazy<ActivityScopeSingleton> lActivityScopedSingleton = ActivityScopeSingleton.attain(this);
     private final @NonNull Lazy<MyViewRootSingleton> lMyViewRootSingleton = Lazy.attain(this, MyViewRootSingleton.class);
+    private final @NonNull Lazy<MyViewRootSingleton> lMyViewRootSingleton2 = Lazy.attain(this, MyViewRootSingleton.class);
 
-    public SharedCustomView(Context context) {
+    public SharedCustomView2(Context context) {
         this(context, null);
     }
 
-    public SharedCustomView(Context context, AttributeSet attrs) {
+    public SharedCustomView2(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public SharedCustomView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SharedCustomView2(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
@@ -42,9 +43,10 @@ public class SharedCustomView extends LinearLayoutCompat {
         FuelInjector.get().igniteViewRoot(this);
         super.onAttachedToWindow();
 
-        Log.d("SharedCustomView...");
+        Log.d("SharedCustomView2...");
         lAppScopedSingleton.get().doSomething();
         lActivityScopedSingleton.get().doSomething();
         lMyViewRootSingleton.get().doSomething();
+        lMyViewRootSingleton2.get().doSomething();
     }
 }

@@ -11,12 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.ath.fuel.FuelInjector;
 import com.ath.fuel.Lazy;
 import com.example.fuelexample.R;
 import com.example.fuelexample.app.AppScopedSingleton;
 import com.example.fuelexample.core.os.CoreFragment;
 import com.example.fuelexample.core.util.Log;
 import com.example.fuelexample.ui.singleton.ActivityScopeSingleton;
+import com.example.fuelexample.ui.singleton.MyViewRootSingleton;
 
 import static com.example.fuelexample.core.util.Views.findView;
 
@@ -26,6 +28,7 @@ public class SharedFragment extends CoreFragment {
 
     private final @NonNull Lazy<AppScopedSingleton> lAppScopedSingleton = AppScopedSingleton.attain(this);
     private final @NonNull Lazy<ActivityScopeSingleton> lActivityScopedSingleton = ActivityScopeSingleton.attain(this);
+    private final @NonNull Lazy<MyViewRootSingleton> lMyViewRootSingleton = Lazy.attain(this, MyViewRootSingleton.class);
 
     private SharedViewModel mViewModel;
 
@@ -34,17 +37,15 @@ public class SharedFragment extends CoreFragment {
     }
 
     @Override public void onAttach(@NonNull Context context) {
+        //FuelInjector.get().ignite(context, this);
         super.onAttach(context);
-
-        Log.d("SharedFragment...");
-        lAppScopedSingleton.get().doSomething();
-        lActivityScopedSingleton.get().doSomething();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.shared_fragment, container, false);
+        //noinspection ConstantConditions
+        return FuelInjector.get().igniteViewRootFragment(inflater.inflate(R.layout.shared_fragment, container, false), this);
     }
 
     @Override
@@ -59,5 +60,10 @@ public class SharedFragment extends CoreFragment {
         findView(view, R.id.shared_fragment_message).setOnClickListener(v -> {
             Toast.makeText(getContext(), "Clicky Clicky!", Toast.LENGTH_LONG).show();
         });
+
+        Log.d("SharedFragment...");
+        lAppScopedSingleton.get().doSomething();
+        lActivityScopedSingleton.get().doSomething();
+        lMyViewRootSingleton.get().doSomething();
     }
 }

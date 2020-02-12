@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.ath.fuel.FuelInjector;
 import com.ath.fuel.Lazy;
 import com.example.fuelexample.R;
 import com.example.fuelexample.app.AppScopedSingleton;
@@ -21,6 +22,7 @@ import com.example.fuelexample.ui.common.fragment.exampleshared.SharedFragment;
 import com.example.fuelexample.ui.main.MainViewModel;
 import com.example.fuelexample.ui.play.PlayActivity;
 import com.example.fuelexample.ui.singleton.ActivityScopeSingleton;
+import com.example.fuelexample.ui.singleton.MyViewRootSingleton;
 
 import static com.example.fuelexample.core.util.Views.findView;
 
@@ -29,6 +31,7 @@ public class MainFragment extends CoreFragment {
 
     private final @NonNull Lazy<AppScopedSingleton> lAppScopedSingleton = AppScopedSingleton.attain(this);
     private final @NonNull Lazy<ActivityScopeSingleton> lActivityScopedSingleton = ActivityScopeSingleton.attain(this);
+    private final @NonNull Lazy<MyViewRootSingleton> lMyViewRootSingleton = Lazy.attain(this, MyViewRootSingleton.class);
 
 
     private MainViewModel mViewModel;
@@ -38,11 +41,8 @@ public class MainFragment extends CoreFragment {
     }
 
     @Override public void onAttach(@NonNull Context context) {
+        //FuelInjector.get().ignite(context, this);
         super.onAttach(context);
-
-        Log.d("MainFragment...");
-        lAppScopedSingleton.get().doSomething();
-        lActivityScopedSingleton.get().doSomething();
     }
 
     @Nullable
@@ -52,7 +52,8 @@ public class MainFragment extends CoreFragment {
                 .beginTransaction()
                 .replace(R.id.main_fragment_bottom_container, SharedFragment.newInstance())
                 .commitNow();
-        return inflater.inflate(R.layout.main_fragment, container, false);
+        //noinspection ConstantConditions
+        return FuelInjector.get().igniteViewRootFragment(inflater.inflate(R.layout.main_fragment, container, false), this);
     }
 
     @Override
@@ -67,5 +68,10 @@ public class MainFragment extends CoreFragment {
         findView(view, R.id.main_fragment_message).setOnClickListener(v -> {
             Pre.notNull(getActivity()).startActivity(new Intent(getActivity(), PlayActivity.class));
         });
+
+        Log.d("MainFragment...");
+        lAppScopedSingleton.get().doSomething();
+        lActivityScopedSingleton.get().doSomething();
+        lMyViewRootSingleton.get().doSomething();
     }
 }
