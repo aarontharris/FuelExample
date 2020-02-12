@@ -7,7 +7,9 @@ import com.ath.fuel.FuelInjector;
 public class App extends Application {
 
     @Override public void onCreate() {
-        FuelInjector.initializeModule(new AppModule(this));
+//        FuelInjector.get().initializeModule(this, new AppModule(this));
+//        FuelInjector.get().ignite(this, this);
+        FuelInjector.get().ignite(this, new AppModule(this));
         super.onCreate();
     }
 

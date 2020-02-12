@@ -7,7 +7,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.LOCAL_VARIABLE;
 import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.TYPE;
 
 /**
@@ -41,6 +43,12 @@ public final class Doc {
     @Retention(RetentionPolicy.SOURCE)
     @Target({TYPE})
     public @interface Immutable {
+    }
+
+    /** Contractual agreement to not keep strong reference to this entity */
+    @Retention(RetentionPolicy.SOURCE)
+    @Target({FIELD, PARAMETER, LOCAL_VARIABLE})
+    public @interface WeakRef {
     }
 
     /**

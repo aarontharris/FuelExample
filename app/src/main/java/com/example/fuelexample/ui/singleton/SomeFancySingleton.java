@@ -23,4 +23,7 @@ public class SomeFancySingleton {
         Log.d("SomeFancySingleton.doSomething -- %s! %s", pojo.getSomeValue(), hashCode());
     }
 
+    protected @NonNull SomeDataPojo getPojo() {
+        return pojo;
+    }
 }

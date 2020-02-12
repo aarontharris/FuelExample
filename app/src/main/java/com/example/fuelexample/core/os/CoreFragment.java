@@ -12,7 +12,7 @@ public class CoreFragment extends Fragment {
 
     @CallSuper
     @Override public void onAttach(@NonNull Context context) {
-        FuelInjector.ignite(context, this);
+        FuelInjector.get().ignite(context, this);
         super.onAttach(context);
     }
 

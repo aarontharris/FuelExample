@@ -11,7 +11,7 @@ import com.ath.fuel.FuelInjector;
 public class CoreActivity extends AppCompatActivity {
     @CallSuper
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
-        FuelInjector.ignite(this, this);
+        FuelInjector.get().ignite(this, this);
         super.onCreate(savedInstanceState);
     }
 }

@@ -38,7 +38,7 @@ public class SharedCustomView extends LinearLayoutCompat {
     }
 
     @Override protected void onAttachedToWindow() {
-        FuelInjector.ignite(getContext(), this);
+        FuelInjector.get().ignite(getContext(), this);
         super.onAttachedToWindow();
 
         Log.d("SharedCustomView...");
