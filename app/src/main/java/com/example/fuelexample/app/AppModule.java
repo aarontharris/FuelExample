@@ -8,8 +8,8 @@ import androidx.annotation.Nullable;
 import com.ath.fuel.FuelModule;
 import com.ath.fuel.Lazy;
 import com.example.fuelexample.data.SomeDataPojo;
-import com.example.fuelexample.ui.main.MainActivity.MainActFuelModule;
-import com.example.fuelexample.ui.main.MainActivity.MainDataPojo;
+import com.example.fuelexample.ui.main.MainDataPojo;
+import com.example.fuelexample.ui.main.MainFuelModule;
 import com.example.fuelexample.ui.singleton.ActivityScopeSingleton;
 
 public class AppModule extends FuelModule {
@@ -21,6 +21,7 @@ public class AppModule extends FuelModule {
         super.configure(app);
 
         bind(AppScopedSingleton.class, new AppScopedSingleton()); // this ok because we're binding a app singleton
+
         bind(ActivityScopeSingleton.class, (lazy, parent) -> new ActivityScopeSingleton());
 
         bind(SomeDataPojo.class, ((lazy, parent) -> {
@@ -29,9 +30,12 @@ public class AppModule extends FuelModule {
             return pojo;
         }));
 
+        // A package wants to keep manage its own dependencies
+        addModule(new MainFuelModule());
 
-        addModule(new MainActFuelModule());
-
+        // This is a test
+        // This class is mapped in MainFuelModule as well
+        // This demonstrates that a warning is logged when a type is mapped more than once.
         bind(MainDataPojo.class, (lazy, parent) -> new MainDataPojo("HI! HI! HI!"));
 
     }
