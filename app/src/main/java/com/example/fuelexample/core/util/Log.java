@@ -21,4 +21,10 @@ public class Log {
         android.util.Log.e(TAG, message, throwable);
     }
 
+    public static void e(@Nullable String format, Object... args) {
+        if (format != null) {
+            android.util.Log.e(TAG, String.format(format, args));
+        }
+    }
+
 }
